@@ -24,7 +24,7 @@ def run(q):
     df['Month'] = pd.to_datetime(df['Month'])
 
     plt.figure(figsize=(11,6))
-    plt.plot(df["Month"], df['TotalSales'])
+    plt.plot(df['Month'], df['TotalSales'])
     plt.title('Försäljningstrend per månad')
     plt.xlabel('Månad')
     plt.ylabel('Total försäljning')
