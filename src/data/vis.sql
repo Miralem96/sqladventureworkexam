@@ -37,3 +37,17 @@ ORDER BY TotalSales DESC;
 
 
 /* Steg 3 */
+
+SELECT
+    DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1) AS [Month],
+    CONCAT(YEAR(OrderDate), '-', RIGHT('0' + CAST(MONTH(OrderDate) AS NVARCHAR(2)), 2)) AS MonthLabel,
+    DATENAME(MONTH, DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1)) AS MonthName,
+    SUM(TotalDue) AS TotalSales,
+    AVG(DATEDIFF(DAY, OrderDate, DueDate)) AS AvgDaysToDue,
+    DATEADD(MONTH, 1, DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1)) AS NextMonth
+FROM Sales.SalesOrderHeader
+GROUP BY
+    DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1),
+    YEAR(OrderDate),
+    MONTH(OrderDate)
+ORDER BY [Month];
