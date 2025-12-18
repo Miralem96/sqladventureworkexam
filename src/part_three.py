@@ -4,7 +4,7 @@ import pandas as pd
 
 
 def run(q):
-    # Steg 3: Försäljningstrend per månad
+    # Försäljningstrend per månad
     sql = """
     SELECT
         DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1) AS [Month],
@@ -28,14 +28,14 @@ def run(q):
     plt.title('Försäljningstrend per månad')
     plt.xlabel('Månad')
     plt.ylabel('Total försäljning')
-    plt.xticks(rotation=50, ha='right')
+    plt.xticks(rotation=55, ha='right')
     ax = plt.gca()
     ax.yaxis.set_major_formatter(mtick.FuncFormatter(lambda x, pos: f'${x/1_000_000:.0f}M'))
     plt.tight_layout()
     plt.show()
 
-    max_row = df.loc[df["TotalSales"].idxmax()]
-    min_row = df.loc[df["TotalSales"].idxmin()]
+    max_row = df.loc[df['TotalSales'].idxmax()]
+    min_row = df.loc[df['TotalSales'].idxmin()]
     print(f'Högsta månad: {max_row['Month'].date()} ({max_row['TotalSales']:})')
     print(f'Lägsta månad: {min_row['Month'].date()} ({min_row['TotalSales']:})')
 
