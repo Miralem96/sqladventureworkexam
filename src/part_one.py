@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+
 def run(q):
     # Antal unika produkter per kategori
     sql = """
@@ -24,8 +25,8 @@ def run(q):
     plt.tight_layout()
     plt.show()
 
-    max_row = df.loc[df["ProductCount"].idxmax()]
-    min_row = df.loc[df["ProductCount"].idxmin()]
+    max_row = df.loc[df['ProductCount'].idxmax()]
+    min_row = df.loc[df['ProductCount'].idxmin()]
     print(f'Flest produkter: {max_row['Category']} ({int(max_row['ProductCount'])})')
     print(f'Minst produkter: {min_row['Category']} ({int(min_row['ProductCount'])})')
 

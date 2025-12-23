@@ -7,28 +7,27 @@ def run(q):
     # Försäljningstrend per månad
     sql = """
     SELECT
-        DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1) AS [Month],
-        CONCAT(YEAR(OrderDate), '-', RIGHT('0' + CAST(MONTH(OrderDate) AS NVARCHAR(2)), 2)) AS MonthLabel,
-        DATENAME(MONTH, DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1)) AS MonthName,
-        SUM(TotalDue) AS TotalSales,
-        AVG(DATEDIFF(DAY, OrderDate, DueDate)) AS AvgDaysToDue,
-        DATEADD(MONTH, 1, DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1)) AS NextMonth
+        YEAR(OrderDate) AS [Year],
+        MONTH(OrderDate) AS [MonthNr],
+        DATENAME(MONTH, OrderDate) AS [MonthName],
+        CONCAT(YEAR(OrderDate), '-', RIGHT('0' + CAST(MONTH(OrderDate) AS nvarchar(2)), 2)) AS MonthLabel,
+        SUM(TotalDue) AS TotalSales
     FROM Sales.SalesOrderHeader
     GROUP BY
-        DATEFROMPARTS(YEAR(OrderDate), MONTH(OrderDate), 1),
         YEAR(OrderDate),
-        MONTH(OrderDate)
-    ORDER BY [Month];
+        MONTH(OrderDate),
+        DATENAME(MONTH, OrderDate)
+    ORDER BY
+        [Year], [MonthNr];
     """
     df = q(sql)
-    df['Month'] = pd.to_datetime(df['Month'])
 
-    plt.figure(figsize=(11,6))
+    # skapar month som ett riktigt datum: YYYY-MM-01
+    df['Month'] = pd.to_datetime(df['Year'].astype(str) + '-' + df['MonthNr'].astype(str) + '-01')
+
     plt.plot(df['Month'], df['TotalSales'])
     plt.title('Försäljningstrend per månad')
-    plt.xlabel('Månad')
-    plt.ylabel('Total försäljning')
-    plt.xticks(rotation=55, ha='right')
+    plt.xticks(rotation=45, ha='right')
     ax = plt.gca()
     ax.yaxis.set_major_formatter(mtick.FuncFormatter(lambda x, pos: f'${x/1_000_000:.0f}M'))
     plt.tight_layout()
