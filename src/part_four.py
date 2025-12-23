@@ -28,4 +28,17 @@ def run(q):
     plt.tight_layout()
     plt.show()
 
+
+    max_sales = df.loc[df['TotalSales'].idxmax()]
+    min_sales = df.loc[df["TotalSales"].idxmin()]
+
+    max_orders = df.loc[df['OrderCount'].idxmax()]
+    min_orders = df.loc[df['OrderCount'].idxmin()]
+
+    print(f"Högst försäljning: {int(max_sales['Year'])} ({max_sales['TotalSales']:,.0f})")
+    print(f"Lägst försäljning: {int(min_sales['Year'])} ({min_sales['TotalSales']:,.0f})")
+
+    print(f"Flest ordrar: {int(max_orders['Year'])} ({int(max_orders['OrderCount'])})")
+    print(f"Minst ordrar: {int(min_orders['Year'])} ({int(min_orders['OrderCount'])})")
+
     return df
