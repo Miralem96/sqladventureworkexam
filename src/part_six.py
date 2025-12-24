@@ -18,9 +18,9 @@ def run(q):
     """
     df = q(sql).sort_values('TotalSales', ascending=False).reset_index(drop=True)
 
-    regions = df["Region"].values
-    sales = df["TotalSales"].values
-    customers = df["UniqueCustomers"].values
+    regions = df['Region'].values
+    sales = df['TotalSales'].values
+    customers = df['UniqueCustomers'].values
 
     x = np.arange(len(regions))
     w = 0.4
