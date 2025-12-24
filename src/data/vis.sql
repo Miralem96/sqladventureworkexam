@@ -84,3 +84,18 @@ JOIN Production.ProductSubcategory psc ON psc.ProductSubcategoryID = p.ProductSu
 JOIN Production.ProductCategory pc ON pc.ProductCategoryID = psc.ProductCategoryID
 GROUP BY pc.Name, p.Name
 ORDER BY TotalSales DESC;
+
+
+/* Steg 6 */
+
+SELECT
+    st.Name AS Region,
+    SUM(soh.TotalDue) AS TotalSales,
+    COUNT(DISTINCT c.CustomerID) AS UniqueCustomers
+FROM Sales.SalesOrderHeader soh
+JOIN Sales.SalesTerritory st
+    ON st.TerritoryID = soh.TerritoryID
+JOIN Sales.Customer c
+     ON c.CustomerID = soh.CustomerID
+GROUP BY st.Name
+ORDER BY TotalSales DESC;
