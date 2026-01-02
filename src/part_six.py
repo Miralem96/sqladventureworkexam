@@ -48,4 +48,14 @@ def run(q):
     print(f'Svagast region: {worst['Region']} ({worst['TotalSales']:})')
     print(f'{best['Region']} sales/kund: {best['TotalSales']/best['UniqueCustomers']:}')
 
+    most_customers = df.loc[df['UniqueCustomers'].idxmax()]
+    print(f'Flest kunder: {most_customers['Region']} ({int(most_customers['UniqueCustomers'])})')
+    print(
+        f'Har starkaste regionen flest kunder?: '
+        f'{'JA' if best['Region']==most_customers['Region'] else 'NEJ'}'
+    )
+
+    print(f'{most_customers['Region']} sales/kund: {most_customers['TotalSales']/most_customers['UniqueCustomers']:}')
+
+
     return df

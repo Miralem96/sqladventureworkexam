@@ -99,3 +99,25 @@ JOIN Sales.Customer c
      ON c.CustomerID = soh.CustomerID
 GROUP BY st.Name
 ORDER BY TotalSales DESC;
+
+/* Steg 7 */
+
+WITH base AS (
+        SELECT
+            st.Name AS Region,
+            CASE WHEN c.StoreID IS NOT NULL THEN 'Store' ELSE 'Individual' END AS CustomerType,
+            COUNT(*) AS OrderCount,
+            SUM(soh.TotalDue) AS TotalSales
+        FROM Sales.SalesOrderHeader soh
+        JOIN Sales.SalesTerritory st ON st.TerritoryID = soh.TerritoryID
+        JOIN Sales.Customer c ON c.CustomerID = soh.CustomerID
+        LEFT JOIN Sales.Store s ON s.BusinessEntityID = c.StoreID
+        GROUP BY st.Name, CASE WHEN c.StoreID IS NOT NULL THEN 'Store' ELSE 'Individual' END
+    )
+    SELECT
+        Region,
+        CustomerType,
+        (TotalSales * 1.0) / NULLIF(OrderCount, 0) AS AvgOrderValue,
+        TotalSales,
+        OrderCount
+    FROM base;
